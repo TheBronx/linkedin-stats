@@ -12,6 +12,14 @@ var lngDetector = new LanguageDetect();
 
 const elastic = require('./elastic');
 
+function dayOfWeek(message) {
+  var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  message.dayOfWeek = days[message.date.getDay()];
+
+  return message;
+}
+
 function parseDate(dateStr) {
   // format: 2/21/18, 6:06 AM
   var dateParts = dateStr.split(',');
@@ -59,7 +67,8 @@ function addSalary(message) {
       var parsed = match.trim().replace(/[\,\.\s]/g, '').replace(/k/, '000');
 
       //en el caso de un match tipo 25-30k nos quedamos con el 30k
-      //ya, no es lo correcto, pero sacar el primer valor aqui dentro de un map() paso xD
+      //ya, no es lo más preciso, pero estamos dentro de un map()
+      //convertir este elento en dos (el 25 y el 30) no es trivial. para la v2
       parsed = parsed.replace(/\d\d[\-\s]+/, '');
 
       if (parsed.indexOf('€') != -1) {
@@ -124,21 +133,23 @@ function parse(file) {
       'folder': record[6]
     };
 
-    if (message.direction == 'INCOMING') { //solo me interesan los mensajes entrantes de momento
-      message = addSalary(message);
-      message = detectLanguage(message);
+    message = dayOfWeek(message);
+    message = detectLanguage(message);
 
-      elastic.insertMessage(message, function() {
-        console.log(message.date.toString());
-        callback(null, '');
-      });
+    if (message.direction == 'INCOMING') {
+      message = addSalary(message);
     } else {
-      callback(null, '');
+      //callback(null, '');
     }
+
+    elastic.insertMessage(message, function() {
+      console.log(message.date.toString());
+      callback(null, '');
+    });
 
   }, {parallel: 1});
 
-  input.pipe(parser).pipe(transformer).pipe(process.stdout); //si quito el stdout no hace todo el transform
+  input.pipe(parser).pipe(transformer).pipe(process.stdout); //si quito el stdout no consume todo el stream
   transformer.on('finish', function() {
     console.log('finished');
   });

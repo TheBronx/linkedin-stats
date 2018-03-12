@@ -20,4 +20,4 @@ function insertMessage(message, callback) {
 
 module.exports = {
   insertMessage: insertMessage
-};;
+};

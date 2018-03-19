@@ -6,15 +6,11 @@ var client = new elasticsearch.Client({
   log: 'error'
 });
 
-function insertMessage(message, callback) {
-  client.index({
+async function insertMessage(message, callback) {
+  return client.index({
     index: 'linkedin',
     type: 'message',
     body: message
-  },function(err,resp,status) {
-      if (err) console.log(err);
-
-      callback(err);
   });
 }
 

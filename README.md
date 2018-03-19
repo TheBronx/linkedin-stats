@@ -1,3 +1,5 @@
+![linkedin and kibana](https://github.com/TheBronx/linkedin-stats/raw/master/dashboard-blur.png)
+
 ## Linkedin stats
 A script that parses the `*.csv` file with all your messages exported from LinkedIn and stores them on ElasticSearch. Includes a dashboard with a lot of visializations for you to start messing around with the data.
 
@@ -5,7 +7,7 @@ A script that parses the `*.csv` file with all your messages exported from Linke
 #### Messages from LinkedIn
 First of all you need a `messages.csv` file from LinkedIn. Go to your profile, Settings and Privacy. Select the Privacy tab. Now scroll to "How LinkedIn uses your data" and clic on Download. Select **messages** cause that's what this script can handle and wait for the download.  
 
-#### Installing the script
+#### Instal the script
 Clone this repo and run:  
 `npm install`  
 Done, installation finished :D

@@ -14,7 +14,7 @@ Done, installation finished :D
 
 #### Configure the script
 Place your `messages.csv` on the same folder as this script. You should see a `messages.csv` file already, replace it.  
-Edit `elastic.js` with your ElasticSearch cluster URL and credentials. If you don't have one, use the free trial provided by Elastic.co: https://www.elastic.co/cloud/as-a-service/thank-you
+Edit `elastic.js` with your ElasticSearch cluster URL and credentials. If you don't have one, use the free trial provided by Elastic.co: https://www.elastic.co/cloud/as-a-service/signup
 
 #### Run it!
 Ready? Run `node index` on your terminal and wait for it to complete. It will log all the messages as it stores them on ElasticSearch.  

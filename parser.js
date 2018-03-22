@@ -2,6 +2,7 @@
 
 const POUNDS_TO_EUROS = 1.12;
 const DOLLARS_TO_EUROS = 0.81;
+const LINKEDIN_HOUR_OFFSET_CORRECTION = -15;
 
 const LanguageDetect = require('languagedetect');
 
@@ -18,6 +19,12 @@ function dayOfWeek(message) {
   var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   message.dayOfWeek = days[message.date.getDay()];
+
+  return message;
+}
+
+function hourOfDay(message) {
+  message.hourOfDay = message.date.getHours();
 
   return message;
 }
@@ -124,6 +131,9 @@ function parseDate(dateStr) {
   d.setMinutes(parseInt(hourParts[1], 10));
   d.setSeconds(0);
   d.setMilliseconds(0);
+
+  //linkedin dates have an offset of +15h (WTF!!!???) or +17 to GMT LOL
+  d.setHours(d.getHours() + LINKEDIN_HOUR_OFFSET_CORRECTION);
   return d;
 }
 
@@ -139,6 +149,7 @@ function parseMessage(record) {
   };
 
   message = dayOfWeek(message);
+  message = hourOfDay(message);
   message = detectLanguage(message);
   message = calculateLength(message);
 
